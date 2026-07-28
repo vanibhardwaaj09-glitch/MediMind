@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MediMind – AI-powered educational health guidance. Not a substitute for professional medical advice." />
+  <title>MediMind – AI Healthcare Assistant</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ===== HEADER / NAVIGATION ===== -->
+  <header class="header">
+    <div class="container header__inner">
+      <div class="logo">
+        <!-- Simple text logo – easy to understand, no image dependency -->
+        <span class="logo__icon" aria-hidden="true">+</span>
+        <span class="logo__text">MediMind</span>
+      </div>
+      <nav class="nav">
+        <a href="#home" class="nav__link">Home</a>
+        <a href="#analyze" class="nav__link">Analyze</a>
+        <a href="#about" class="nav__link">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO / HOMEPAGE SECTION ===== -->
+    <section id="home" class="hero">
+      <div class="container hero__content">
+        <p class="hero__badge">AI Healthcare Assistant</p>
+        <h1 class="hero__title">Understand Your Symptoms with <span class="text-accent">Educational Guidance</span></h1>
+        <p class="hero__subtitle">
+          Describe how you feel and receive clear, AI-generated health information
+          to help you learn more — always consult a doctor for medical decisions.
+        </p>
+        <a href="#analyze" class="btn btn--primary">Get Started</a>
+      </div>
+    </section>
+
+    <!-- ===== MEDICAL DISCLAIMER BANNER ===== -->
+    <section class="disclaimer-banner" aria-label="Medical disclaimer">
+      <div class="container disclaimer-banner__inner">
+        <span class="disclaimer-banner__icon" aria-hidden="true">!</span>
+        <p>
+          <strong>Medical Disclaimer:</strong>
+          MediMind provides <em>educational information only</em>. It does <strong>not</strong>
+          diagnose, treat, or replace advice from a licensed healthcare professional.
+          For emergencies, call your local emergency number immediately.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== SYMPTOM ANALYSIS FORM ===== -->
+    <section id="analyze" class="analyze-section">
+      <div class="container">
+        <h2 class="section-title">Analyze Your Symptoms</h2>
+        <p class="section-subtitle">
+          Enter your symptoms below. Our AI will provide general educational guidance.
+        </p>
+
+        <div class="analyze-grid">
+          <!-- Left column: Form -->
+          <form id="symptom-form" class="symptom-form" novalidate>
+            <!-- Symptoms (required) -->
+            <div class="form-group">
+              <label for="symptoms" class="form-label">
+                Describe your symptoms <span class="required">*</span>
+              </label>
+              <textarea
+                id="symptoms"
+                name="symptoms"
+                class="form-textarea"
+                rows="5"
+                placeholder="Example: I have had a headache and mild fever for 2 days..."
+                maxlength="500"
+                required
+              ></textarea>
+              <div class="form-meta">
+                <span id="char-count" class="char-count">0 / 500</span>
+              </div>
+            </div>
+
+            <!-- Optional: Duration -->
+            <div class="form-group">
+              <label for="duration" class="form-label">Duration (optional)</label>
+              <input
+                type="text"
+                id="duration"
+                name="duration"
+                class="form-input"
+                placeholder="e.g. 2 days, 1 week"
+              />
+            </div>
+
+            <!-- Optional: Severity -->
+            <div class="form-group">
+              <label for="severity" class="form-label">Severity (optional)</label>
+              <select id="severity" name="severity" class="form-select">
+                <option value="">Select severity</option>
+                <option value="mild">Mild</option>
+                <option value="moderate">Moderate</option>
+                <option value="severe">Severe</option>
+              </select>
+            </div>
+
+            <!-- User must acknowledge disclaimer before submitting -->
+            <div class="form-group form-group--checkbox">
+              <label class="checkbox-label">
+                <input type="checkbox" id="disclaimer-check" required />
+                <span>
+                  I understand this tool provides educational information only
+                  and is not a substitute for professional medical advice.
+                </span>
+              </label>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" id="analyze-btn" class="btn btn--primary btn--full">
+              Analyze Symptoms
+            </button>
+
+            <!-- Error message area (hidden by default) -->
+            <div id="form-error" class="form-error hidden" role="alert"></div>
+          </form>
+
+          <!-- Right column: Results -->
+          <div class="results-panel">
+            <!-- Placeholder shown before any analysis -->
+            <div id="results-placeholder" class="results-placeholder">
+              <div class="results-placeholder__icon" aria-hidden="true">?</div>
+              <h3>Your guidance will appear here</h3>
+              <p>Fill in your symptoms and click "Analyze Symptoms" to get started.</p>
+            </div>
+
+            <!-- Loading spinner (hidden by default) -->
+            <div id="loading-state" class="loading-state hidden" aria-live="polite">
+              <div class="spinner" aria-hidden="true"></div>
+              <p>Analyzing your symptoms… Please wait.</p>
+            </div>
+
+            <!-- AI response container (hidden by default) -->
+            <div id="results-content" class="results-content hidden">
+              <h3 class="results-content__title">Educational Health Guidance</h3>
+
+              <!-- Emergency warning (shown only if backend detects urgent symptoms) -->
+              <div id="emergency-alert" class="emergency-alert hidden" role="alert">
+                <strong>Emergency Notice:</strong>
+                Your symptoms may require urgent medical attention.
+                Please contact emergency services or visit the nearest hospital immediately.
+              </div>
+
+              <!-- Dynamic result sections are inserted here by app.js -->
+              <div id="guidance-sections"></div>
+
+              <!-- Disclaimer repeated with every result -->
+              <div class="results-disclaimer">
+                <p id="results-disclaimer-text"></p>
+              </div>
+
+              <button type="button" id="analyze-again-btn" class="btn btn--secondary btn--full">
+                Analyze Again
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT / FEATURES SECTION (for presentation) ===== -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <h2 class="section-title">How MediMind Works</h2>
+        <div class="features-grid">
+          <article class="feature-card">
+            <div class="feature-card__number">1</div>
+            <h3>Enter Symptoms</h3>
+            <p>Describe what you are experiencing in plain language.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__number">2</div>
+            <h3>AI Analysis</h3>
+            <p>Our backend sends your input to Google's Gemini API safely.</p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-card__number">3</div>
+            <h3>Get Guidance</h3>
+            <p>Receive structured educational information — not a diagnosis.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>&copy; 2026 MediMind. For educational purposes only.</p>
+      <p class="footer__disclaimer">Not a medical device. Always consult a healthcare professional.</p>
+    </div>
+  </footer>
+
+  <!-- Load config first, then main app logic -->
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
